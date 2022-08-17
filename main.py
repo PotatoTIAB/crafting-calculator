@@ -1,22 +1,27 @@
 class CraftingCalculator:
     def __init__(self):
         self.recipes = {
-            "foo": [["bar"]]
+            "foo": [["bar"]],
+            "bar": [["foobar"]]
         }
-        self.items = ["foo", "bar"]
+        self.items = ["foo", "bar", "foobar"]
 
-    def recipe(self, arr):
+    def calculate(self, arr):
         _result = []
         if not isinstance(arr, list):
             arr = [arr]
+        for item in self.substitute(arr):
+            _result.append(item)
+        return _result
+    
+    def substitute(self, arr):
         for item in arr:
             if item in self.recipes.keys():
-                return self.calculate(self.recipes.get(item)[0])
+                for res in self.substitute(self.recipes.get(item)[0]):
+                    yield res
             else:
-                return item
-    
-    def recc(self, arr):
-        pass
+                yield item
+
 
 calc = CraftingCalculator()
-print(calc.calculate("foo"))
+print(calc.calculate("foobar"))
