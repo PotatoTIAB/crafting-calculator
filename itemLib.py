@@ -65,6 +65,11 @@ class ItemStack:
             raise TypeError("Invalid division.")
 
 
+    def __mod__(self, x):
+        if isinstance(x, int) or isinstance(x, float):
+            return self.count % x
+
+
 
 class ItemContainer:
     pass
