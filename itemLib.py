@@ -86,6 +86,20 @@ class ItemContainer:
                 self.contents[_i] += x
         else:
             raise TypeError(f"You can only add items, not {type(x)}.")
+    
+    
+    def remove(self, x):
+        if isinstance(x, ItemStack):
+            _i = self.index(x)
+            if _i < 0:
+                return None
+            else:
+                if self.contents[_i].count > x.count:
+                    self.contents[_i] -= x
+                else:
+                    return self.contents.pop(_i)
+        else:
+            raise TypeError(f"You can only remove items, not {type(x)}.")
 
 
     def index(self, x):
