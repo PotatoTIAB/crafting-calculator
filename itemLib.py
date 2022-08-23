@@ -16,6 +16,26 @@ class ItemStack:
                 raise ValueError(f"{x} is not a whole number.")
         else:
             raise TypeError("Invalid summation.")
+    
+    def __sub__(self, x):
+        if isinstance(x, self.__class__):
+            if self.id == x.id:
+                if self.count <= x.count:
+                    return None
+                else:
+                    return self.__class__(self.id, self.count - x.count)
+            else:
+                raise NotImplementedError("You can't subtract items of 2 different kinds.")
+        elif isinstance(x, int) or isinstance(x, float):
+            if x % 1 == 0:
+                if self.count <= x:
+                    return None
+                else:
+                    return self.__class__(self.id, self.count - x)
+            else:
+                raise ValueError(f"{x} is not a whole number.")
+        else:
+            raise TypeError("Invalid subtraction.")
 
 
 class ItemContainer:
