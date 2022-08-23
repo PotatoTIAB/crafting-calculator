@@ -9,6 +9,11 @@ class ItemStack:
                 return self.__class__(self.id, self.count + x.count)
             else:
                 raise NotImplementedError("You can't add items of 2 different kinds yet.")
+        elif isinstance(x, int) or isinstance(x, float):
+            if x % 1 == 0:
+                return self.__class__(self.id, self.count + x)
+            else:
+                raise ValueError(f"{x} is not a whole number.")
         else:
             raise TypeError("Invalid summation.")
 
