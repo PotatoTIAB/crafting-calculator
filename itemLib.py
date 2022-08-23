@@ -76,10 +76,18 @@ class ItemContainer:
         self.contents = []
         self.size = size
     
-    def __add__(self, x):
+
+    def add(self, x):
         if isinstance(x, ItemStack):
-            pass
-        
+            _i = self.index(x)
+            if _i < 0:
+                self.contents.append(x)
+            else:
+                self.contents[_i] += x
+        else:
+            raise TypeError(f"You can only add items, not {type(x)}.")
+
+
     def index(self, x):
         if isinstance(x, ItemStack):
             x = x.id
