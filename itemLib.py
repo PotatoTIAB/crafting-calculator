@@ -77,6 +77,11 @@ class ItemContainer:
         self.size = size
     
 
+    def __iter__(self):
+        for _item in self.contents:
+            yield _item
+
+
     def add(self, x):
         if isinstance(x, ItemStack):
             _i = self.index(x)
@@ -84,6 +89,9 @@ class ItemContainer:
                 self.contents.append(x)
             else:
                 self.contents[_i] += x
+        elif isinstance(x, self.__class__):
+            for _item in x:
+                _ret.append(self.add(_item))
         else:
             raise TypeError(f"You can only add items, not {type(x)}.")
     
@@ -96,8 +104,14 @@ class ItemContainer:
             else:
                 if self.contents[_i].count > x.count:
                     self.contents[_i] -= x
+                    return x
                 else:
                     return self.contents.pop(_i)
+        elif isinstance(x, self.__class__):
+            _ret = []
+            for _item in x:
+                _ret.append(self.remove(_item))
+            return _ret
         else:
             raise TypeError(f"You can only remove items, not {type(x)}.")
 
@@ -114,6 +128,7 @@ class ItemContainer:
                 return _i
             _i += 1
         return -1
+
 
 if __name__ == "__main__":
     pass
