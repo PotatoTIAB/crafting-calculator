@@ -1,3 +1,5 @@
+import math
+
 class ItemStack:
     def __init__(self, ID="air", count=1):
         self.id = ID
@@ -36,6 +38,28 @@ class ItemStack:
                 raise ValueError(f"{x} is not a whole number.")
         else:
             raise TypeError("Invalid subtraction.")
+        
+    
+    def __mul__(self, x):
+        if isinstance(x, int) or isinstance(x, float):
+            _count = math.floor(self.count * x)
+            if _count > 0:
+                return self.__class__(self.id, _count)
+            else:
+                return None
+        else:
+            raise TypeError("Invalid multiplication.")
+    
+    
+    def __truediv__(self, x):
+        if isinstance(x, int) or isinstance(x, float):
+            _count = math.floor(self.count / x)
+            if _count > 0:
+                return self.__class__(self.id, _count)
+            else:
+                return None
+        else:
+            raise TypeError("Invalid division.")
 
 
 class ItemContainer:
