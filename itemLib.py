@@ -1,10 +1,12 @@
 import math
 
+
 class ItemStack:
     def __init__(self, ID="air", count=1):
         self.id = ID
         self.count = count
     
+
     def __add__(self, x):
         if isinstance(x, self.__class__):
             if self.id == x.id:
@@ -19,6 +21,7 @@ class ItemStack:
         else:
             raise TypeError("Invalid summation.")
     
+
     def __sub__(self, x):
         if isinstance(x, self.__class__):
             if self.id == x.id:
@@ -60,6 +63,7 @@ class ItemStack:
                 return None
         else:
             raise TypeError("Invalid division.")
+
 
 
 class ItemContainer:
