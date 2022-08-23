@@ -75,6 +75,23 @@ class ItemContainer:
     def __init__(self, size=inf):
         self.contents = []
         self.size = size
+    
+    def __add__(self, x):
+        if isinstance(x, ItemStack):
+            pass
+        
+    def index(self, x):
+        if isinstance(x, ItemStack):
+            x = x.id
+        elif not isinstance(x, str):
+            raise TypeError(f"Invalid type: {type(x)}")
+        
+        _i = 0
+        for item in self.contents:
+            if item.id == x:
+                return _i
+            _i += 1
+        return -1
 
 if __name__ == "__main__":
     pass
