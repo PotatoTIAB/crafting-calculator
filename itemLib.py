@@ -1,7 +1,13 @@
 import math
 from math import inf
 
+
+
 class ItemStack:
+    """
+    Item class that supports math operators. Recommended to use with ItemContainer().
+    """
+
     def __init__(self, ID="air", count=1):
         self.id = ID
         self.count = count
@@ -12,12 +18,14 @@ class ItemStack:
             if self.id == x.id:
                 return self.__class__(self.id, self.count + x.count)
             else:
-                raise NotImplementedError("You can't add items of 2 different kinds yet.")
+                raise NotImplementedError("You can't add items of 2 different kinds.")
+        
         elif isinstance(x, int) or isinstance(x, float):
             if x % 1 == 0:
                 return self.__class__(self.id, self.count + x)
             else:
                 raise ValueError(f"{x} is not a whole number.")
+        
         else:
             raise TypeError("Invalid summation.")
     
@@ -31,6 +39,7 @@ class ItemStack:
                     return self.__class__(self.id, self.count - x.count)
             else:
                 raise NotImplementedError("You can't subtract items of 2 different kinds.")
+        
         elif isinstance(x, int) or isinstance(x, float):
             if x % 1 == 0:
                 if self.count <= x:
@@ -39,6 +48,7 @@ class ItemStack:
                     return self.__class__(self.id, self.count - x)
             else:
                 raise ValueError(f"{x} is not a whole number.")
+        
         else:
             raise TypeError("Invalid subtraction.")
         
@@ -50,6 +60,7 @@ class ItemStack:
                 return self.__class__(self.id, _count)
             else:
                 return None
+        
         else:
             raise TypeError("Invalid multiplication.")
     
@@ -61,6 +72,7 @@ class ItemStack:
                 return self.__class__(self.id, _count)
             else:
                 return None
+        
         else:
             raise TypeError("Invalid division.")
 
@@ -72,6 +84,10 @@ class ItemStack:
 
 
 class ItemContainer:
+    """
+    Container to store ItemStacks().
+    """
+    
     def __init__(self, size=inf):
         self.contents = []
         self.size = size
@@ -83,20 +99,31 @@ class ItemContainer:
 
 
     def add(self, x):
+        """
+        Adds the given item or container items to container.
+        """
+
         if isinstance(x, ItemStack):
             _i = self.index(x)
             if _i < 0:
                 self.contents.append(x)
             else:
                 self.contents[_i] += x
+        
         elif isinstance(x, self.__class__):
             for _item in x:
                 _ret.append(self.add(_item))
+        
         else:
             raise TypeError(f"You can only add items, not {type(x)}.")
     
     
     def remove(self, x):
+        """
+        Removes the given item or container items from container and return what has been removed.
+        Can delete that slot if no items left to remove.
+        """
+        
         if isinstance(x, ItemStack):
             _i = self.index(x)
             if _i < 0:
@@ -107,18 +134,26 @@ class ItemContainer:
                     return x
                 else:
                     return self.contents.pop(_i)
+        
         elif isinstance(x, self.__class__):
             _ret = []
             for _item in x:
                 _ret.append(self.remove(_item))
             return _ret
+        
         else:
             raise TypeError(f"You can only remove items, not {type(x)}.")
 
 
     def index(self, x):
+        """
+        Finds and returns the index number of given item.
+        Returns -1 if not found.
+        """
+
         if isinstance(x, ItemStack):
             x = x.id
+        
         elif not isinstance(x, str):
             raise TypeError(f"Invalid type: {type(x)}")
         
@@ -128,7 +163,3 @@ class ItemContainer:
                 return _i
             _i += 1
         return -1
-
-
-if __name__ == "__main__":
-    pass
