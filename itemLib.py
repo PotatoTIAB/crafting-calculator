@@ -1,5 +1,5 @@
 import math
-
+from math import inf
 
 class ItemStack:
     def __init__(self, ID="air", count=1):
@@ -72,7 +72,9 @@ class ItemStack:
 
 
 class ItemContainer:
-    pass
+    def __init__(self, size=inf):
+        self.contents = []
+        self.size = size
 
 if __name__ == "__main__":
     pass
