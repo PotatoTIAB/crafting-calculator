@@ -1,3 +1,4 @@
+from sys import exit
 from itemLib import *
 
 class CraftingCalculator:
@@ -28,6 +29,13 @@ class CraftingCalculator:
         return cont
 
 
+    def recipeSearch(self, itemid):
+        for _cont in self.recipes.keys():
+            for _item in _cont:
+                if _item.id == itemid:
+                    return {_cont: self.recipes[_cont]}
+
+
     def substitute(self, arr):
         for item in arr:
             if item in self.recipes.keys():
@@ -38,4 +46,6 @@ class CraftingCalculator:
 
 
 calc = CraftingCalculator()
+calc.recipeSearch("foo")
+exit()
 print(calc.calculate("foo"))
