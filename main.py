@@ -1,19 +1,33 @@
+from itemLib import *
+
 class CraftingCalculator:
     def __init__(self):
         self.recipes = {
-            "foo": [["bar"]],
-            "bar": [["foobar"]]
+            ItemContainer(ItemStack("foo")): ItemContainer(ItemStack("bar")),
+            ItemContainer(ItemStack("bar")): ItemContainer(ItemStack("foobar")),
         }
-        self.items = ["foo", "bar", "foobar"]
 
-    def calculate(self, arr):
-        _result = []
-        if not isinstance(arr, list):
-            arr = [arr]
-        for item in self.substitute(arr):
-            _result.append(item)
-        return _result
-    
+
+    def calculate(self, cont):
+        if not isinstance(cont, ItemContainer):
+            _item, cont = cont, ItemContainer()
+            if isinstance(_item, str):
+                _item = ItemStack(_item)
+            elif isinstance(_item, list):
+                if len(_item) == 2:
+                    _item = ItemStack(_item[0], _item[1])
+                elif len(cont) == 1:
+                    _item = ItemStack(_item[0])
+                else:
+                    raise ValueError(f"Expected a list with 1 or 2 elements, got {len(cont)} instead.")
+            cont.add(_item)
+        
+        # for item in self.substitute(cont):
+        #     _result.append(item)
+        
+        return cont
+
+
     def substitute(self, arr):
         for item in arr:
             if item in self.recipes.keys():
@@ -24,4 +38,4 @@ class CraftingCalculator:
 
 
 calc = CraftingCalculator()
-print(calc.calculate("foobar"))
+print(calc.calculate("foo"))
