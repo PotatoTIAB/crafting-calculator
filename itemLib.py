@@ -123,7 +123,7 @@ class ItemContainer:
         
         elif isinstance(x, self.__class__):
             for _item in x:
-                _ret.append(self.add(_item))
+                self.contents.append(_item)
         
         else:
             raise TypeError(f"You can only add items, not {type(x)}.")
