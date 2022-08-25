@@ -80,6 +80,10 @@ class ItemStack:
     def __mod__(self, x):
         if isinstance(x, int) or isinstance(x, float):
             return self.count % x
+    
+
+    def __str__(self):
+        return f"{self.count}x {self.id.title()}"
 
 
 
@@ -96,6 +100,13 @@ class ItemContainer:
     def __iter__(self):
         for _item in self.contents:
             yield _item
+    
+
+    def __str__(self):
+        _str = ""
+        for _item in self:
+            _str += str(_item) + '\n'
+        return _str[:-1]
 
 
     def add(self, x):
@@ -163,3 +174,6 @@ class ItemContainer:
                 return _i
             _i += 1
         return -1
+
+if __name__ == "__main__":
+    pass
