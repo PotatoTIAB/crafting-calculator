@@ -1,10 +1,11 @@
+from itemLib import *
+
 class CraftingCalculator:
     def __init__(self):
         self.recipes = {
-            "foo": [["bar"]],
-            "bar": [["foobar"]]
+            ItemContainer(ItemStack("foo")): ItemContainer(ItemStack("bar")),
+            ItemContainer(ItemStack("bar")): ItemContainer(ItemStack("foobar")),
         }
-        self.items = ["foo", "bar", "foobar"]
 
     def calculate(self, arr):
         _result = []
