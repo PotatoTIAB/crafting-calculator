@@ -171,11 +171,30 @@ class ItemContainer:
             raise TypeError(f"Invalid type: {type(x)}")
         
         _i = 0
-        for item in self.contents:
-            if item.id == x:
+        for _item in self.contents:
+            if _item.id == x:
                 return _i
             _i += 1
         return -1
+    
+    
+    def find(self, x: (ItemStack| str)) -> (int | None):
+        """
+        Finds and returns the item inside the container.
+        Returns None if not found.
+        """
+
+        if isinstance(x, ItemStack):
+            x = x.id
+        
+        elif not isinstance(x, str):
+            raise TypeError(f"Invalid type: {type(x)}")
+        
+        for _item in self.contents:
+            if _item.id == x:
+                return x
+
+
 
 if __name__ == "__main__":
     pass
