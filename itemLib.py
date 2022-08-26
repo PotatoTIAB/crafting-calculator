@@ -92,9 +92,11 @@ class ItemContainer:
     Container to store ItemStacks().
     """
     
-    def __init__(self, size=inf):
+    def __init__(self, *args, size=inf):
         self.contents = []
         self.size = size
+        for _item in args:
+            self.add(_item)
     
 
     def __iter__(self):
