@@ -46,11 +46,11 @@ class CraftingCalculator:
         for _item in cont:
             _input, _output = self.recipeSearch(_item.id)
             if not _output:
-                return
+                return False
 
             cont.remove(_input)
             cont.add(_output)
-
+            return True
 
 
 calc = CraftingCalculator()
