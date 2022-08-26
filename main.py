@@ -4,8 +4,8 @@ from itemLib import *
 class CraftingCalculator:
     def __init__(self):
         self.recipes = {
-            ItemContainer(ItemStack("foo")): ItemContainer(ItemStack("bar")),
-            ItemContainer(ItemStack("bar")): ItemContainer(ItemStack("foobar")),
+            ItemContainer(ItemStack("stick", 2)): ItemContainer(ItemStack("planks")),
+            ItemContainer(ItemStack("planks", 2)): ItemContainer(ItemStack("wood")),
         }
 
 
@@ -55,4 +55,4 @@ class CraftingCalculator:
 
 
 calc = CraftingCalculator()
-print(calc.calculate("foo"))
+print(calc.calculate(ItemStack("stick", 16)))
