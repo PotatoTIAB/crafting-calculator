@@ -1,5 +1,6 @@
 from sys import exit
 from itemLib import *
+import math
 
 class CraftingCalculator:
     def __init__(self):
@@ -47,11 +48,9 @@ class CraftingCalculator:
             for _recipeItem in _output:
                 _foundItem = cont.find(_recipeItem)
                 if _foundItem:
-                    _multList.append(_foundItem.count / _recipeItem.count)
+                    _multList.append(math.ceil(_foundItem.count / _recipeItem.count))
             
             _mult = max(i for i in _multList)
-            print(_mult)
-
             cont.remove(_output, _mult)
             cont.add(_input, _mult)
             return True
