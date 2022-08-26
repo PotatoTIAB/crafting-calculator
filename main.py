@@ -39,12 +39,12 @@ class CraftingCalculator:
 
     def substitute(self, cont: ItemContainer):
         for _item in cont:
-            _input, _output = self.recipeSearch(_item.id)
-            if not _output:
+            _output, _input = self.recipeSearch(_item.id)
+            if not _input:
                 return False
 
-            cont.remove(_input)
-            cont.add(_output)
+            cont.remove(_output)
+            cont.add(_input)
             return True
 
 
