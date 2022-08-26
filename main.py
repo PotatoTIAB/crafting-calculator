@@ -54,11 +54,10 @@ itemcount = None
 while True:
     try:
         itemcount = int(input("Enter how many items you want to craft: "))
-    finally:
-        if itemcount:
-            break
-        else:
-            print("Invalid input.")
+    except ValueError:
+        print("Invalid input.")
+        continue
+    break
 itemToCraft = ItemStack(itemid, itemcount)
 print(f"Items required to craft {str(itemToCraft)}:")
 print(calc.calculate(itemToCraft))
