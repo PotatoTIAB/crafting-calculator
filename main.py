@@ -43,8 +43,17 @@ class CraftingCalculator:
             if not _input:
                 return False
 
-            cont.remove(_output)
-            cont.add(_input)
+            _multList = []
+            for _recipeItem in _output:
+                _foundItem = cont.find(_recipeItem)
+                if _foundItem:
+                    _multList.append(_foundItem.count / _recipeItem.count)
+            
+            _mult = max(i for i in _multList)
+            print(_mult)
+
+            cont.remove(_output, _mult)
+            cont.add(_input, _mult)
             return True
 
 
