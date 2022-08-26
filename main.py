@@ -34,6 +34,7 @@ class CraftingCalculator:
             for _item in _cont:
                 if _item.id == itemid:
                     return (_cont, self.recipes[_cont])
+        return (None, None)
 
 
     def substitute(self, cont):
@@ -54,5 +55,5 @@ class CraftingCalculator:
 
 
 calc = CraftingCalculator()
-calc.substitute(ItemContainer(ItemStack("foo")))
+calc.substitute(ItemContainer(ItemStack("potato")))
 # print(calc.substitute(ItemContainer(ItemStack("foo"))))
