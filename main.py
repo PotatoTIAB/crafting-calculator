@@ -55,4 +55,6 @@ class CraftingCalculator:
 
 
 calc = CraftingCalculator()
+itemToCraft = ItemStack("stick", 16)
+print(f"Items required to craft {str(itemToCraft)}:")
 print(calc.calculate(ItemStack("stick", 16)))
