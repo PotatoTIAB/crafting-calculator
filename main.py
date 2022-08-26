@@ -23,8 +23,8 @@ class CraftingCalculator:
                     raise ValueError(f"Expected a list with 1 or 2 elements, got {len(cont)} instead.")
             cont.add(_item)
         
-        # for item in self.substitute(cont):
-        #     _result.append(item)
+        while self.substitute(cont):
+            pass
         
         return cont
 
@@ -55,5 +55,4 @@ class CraftingCalculator:
 
 
 calc = CraftingCalculator()
-calc.substitute(ItemContainer(ItemStack("potato")))
-# print(calc.substitute(ItemContainer(ItemStack("foo"))))
+print(calc.calculate("foo"))
