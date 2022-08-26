@@ -1,6 +1,6 @@
 import math
 from math import inf
-
+from typing import Any
 
 
 class ItemStack:
@@ -111,7 +111,7 @@ class ItemContainer:
         return _str[:-1]
 
 
-    def add(self, x):
+    def add(self, x: (Any | ItemStack)) -> None:
         """
         Adds the given item or container items to container.
         """
@@ -131,7 +131,7 @@ class ItemContainer:
             raise TypeError(f"You can only add items, not {type(x)}.")
     
     
-    def remove(self, x):
+    def remove(self, x: (Any | ItemStack)) -> (list[ItemStack] | None):
         """
         Removes the given item or container items from container and return what has been removed.
         Can delete that slot if no items left to remove.
@@ -144,9 +144,9 @@ class ItemContainer:
             else:
                 if self.contents[_i].count > x.count:
                     self.contents[_i] -= x
-                    return x
+                    return [x]
                 else:
-                    return self.contents.pop(_i)
+                    return [self.contents.pop(_i)]
         
         elif isinstance(x, self.__class__):
             _ret = []
@@ -158,7 +158,7 @@ class ItemContainer:
             raise TypeError(f"You can only remove items, not {type(x)}.")
 
 
-    def index(self, x):
+    def index(self, x: (ItemStack | str)) -> int:
         """
         Finds and returns the index number of given item.
         Returns -1 if not found.

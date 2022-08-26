@@ -9,7 +9,7 @@ class CraftingCalculator:
         }
 
 
-    def calculate(self, cont):
+    def calculate(self, cont: (ItemContainer | ItemStack | str | list[str, int | None])) -> ItemContainer:
         if not isinstance(cont, ItemContainer):
             _item, cont = cont, ItemContainer()
             if isinstance(_item, str):
@@ -29,7 +29,7 @@ class CraftingCalculator:
         return cont
 
 
-    def recipeSearch(self, itemid):
+    def recipeSearch(self, itemid: str) -> (tuple[ItemContainer, ItemContainer] | tuple[None, None]):
         for _cont in self.recipes.keys():
             for _item in _cont:
                 if _item.id == itemid:
@@ -37,13 +37,7 @@ class CraftingCalculator:
         return (None, None)
 
 
-    def substitute(self, cont):
-        # for item in arr:
-        #     if item in self.recipes.keys():
-        #         for res in self.substitute(self.recipes.get(item)[0]):
-        #             yield res
-        #     else:
-        #         yield item
+    def substitute(self, cont: ItemContainer):
         for _item in cont:
             _input, _output = self.recipeSearch(_item.id)
             if not _output:
@@ -55,6 +49,6 @@ class CraftingCalculator:
 
 
 calc = CraftingCalculator()
-itemToCraft = ItemStack("stick", 16)
+itemToCraft = ItemStack("stick", 3)
 print(f"Items required to craft {str(itemToCraft)}:")
 print(calc.calculate(itemToCraft))
