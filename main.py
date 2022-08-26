@@ -33,19 +33,26 @@ class CraftingCalculator:
         for _cont in self.recipes.keys():
             for _item in _cont:
                 if _item.id == itemid:
-                    return {_cont: self.recipes[_cont]}
+                    return (_cont, self.recipes[_cont])
 
 
-    def substitute(self, arr):
-        for item in arr:
-            if item in self.recipes.keys():
-                for res in self.substitute(self.recipes.get(item)[0]):
-                    yield res
-            else:
-                yield item
+    def substitute(self, cont):
+        # for item in arr:
+        #     if item in self.recipes.keys():
+        #         for res in self.substitute(self.recipes.get(item)[0]):
+        #             yield res
+        #     else:
+        #         yield item
+        for _item in cont:
+            _input, _output = self.recipeSearch(_item.id)
+            if not _output:
+                return
+
+            cont.remove(_input)
+            cont.add(_output)
+
 
 
 calc = CraftingCalculator()
-calc.recipeSearch("foo")
-exit()
-print(calc.calculate("foo"))
+calc.substitute(ItemContainer(ItemStack("foo")))
+# print(calc.substitute(ItemContainer(ItemStack("foo"))))
