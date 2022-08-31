@@ -197,6 +197,15 @@ class ItemContainer:
                 return _item
 
 
+    def mult(self, mult: int) -> None:
+        """
+        Multiplies the items inside with the given mult.
+        """
+
+        for item in self.contents:
+            item *= mult
+
+
 
 if __name__ == "__main__":
     pass
