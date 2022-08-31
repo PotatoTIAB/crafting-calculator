@@ -202,9 +202,9 @@ class ItemContainer:
         Multiplies the items inside with the given mult.
         """
 
-        for item in self.contents:
-            item *= mult
-
+        for i in range(len(self.contents)):
+            self.contents[i] *= mult
+        
 
 
 if __name__ == "__main__":
