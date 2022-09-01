@@ -63,14 +63,19 @@ class CraftingCalculator:
             for _recipeItem in _output:
                 _foundItem = cont.find(_recipeItem)
                 if _foundItem:
+                    print(_foundItem.count, _recipeItem.count)
                     _multList.append(math.ceil(_foundItem.count / _recipeItem.count))
+                    break
+            else:
+                continue
             
             _mult = max(i for i in _multList)
+            print(f"current mult: {_multList}")
             _input.mult(_mult)
             _output.mult(_mult)
-            print(f"used {str(_input)}")
             cont.remove(_output)
             cont.add(_input)
+            print(f"current state: {str(cont)}")
             return (_input, _output) 
         return False
 
