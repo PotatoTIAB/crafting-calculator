@@ -111,6 +111,11 @@ class ItemContainer:
         return _str[:-2]
 
 
+
+    def copy(self):
+        return self.__class__(*self.contents, size=self.size)
+
+
     def add(self, x: (Any | ItemStack), mult: int = 1) -> None:
         """
         Adds the given item or container items to container.
