@@ -7,6 +7,7 @@ class CraftingCalculator:
         self.recipes = {
             ItemContainer(ItemStack("stick", 2)): ItemContainer(ItemStack("planks")),
             ItemContainer(ItemStack("planks", 2)): ItemContainer(ItemStack("wood")),
+            ItemContainer(ItemStack("wooden_sword")): ItemContainer(ItemStack("planks", 2), ItemStack("stick")),
         }
 
 
@@ -56,7 +57,7 @@ class CraftingCalculator:
         for _item in cont:
             _output, _input = self.recipeSearch(_item.id)
             if not _input:
-                return False
+                continue
 
             _multList = []
             for _recipeItem in _output:
@@ -67,9 +68,11 @@ class CraftingCalculator:
             _mult = max(i for i in _multList)
             _input.mult(_mult)
             _output.mult(_mult)
+            print(f"used {str(_input)}")
             cont.remove(_output)
             cont.add(_input)
             return (_input, _output) 
+        return False
 
 
 calc = CraftingCalculator()
