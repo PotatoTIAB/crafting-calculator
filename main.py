@@ -71,8 +71,8 @@ class CraftingCalculator:
             
             _mult = max(i for i in _multList)
             print(f"current mult: {_multList}")
-            _input.mult(_mult)
-            _output.mult(_mult)
+            _input *= _mult
+            _output *= _mult
             cont.remove(_output)
             cont.add(_input)
             print(f"current state: {str(cont)}")
