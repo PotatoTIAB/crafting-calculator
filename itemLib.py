@@ -111,7 +111,7 @@ class ItemContainer:
         return _str[:-2]
 
 
-    def __mult__(self, x):
+    def __mul__(self, x):
         _cont = self.copy()
         _cont.mult(x)
         return _cont
