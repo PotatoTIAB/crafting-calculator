@@ -107,8 +107,8 @@ class ItemContainer:
     def __str__(self):
         _str = ""
         for _item in self:
-            _str += str(_item) + '\n'
-        return _str[:-1]
+            _str += str(_item) + ', '
+        return _str[:-2]
 
 
     def add(self, x: (Any | ItemStack), mult: int = 1) -> None:
