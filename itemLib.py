@@ -139,6 +139,10 @@ class ItemContainer:
             raise TypeError("Only two containers can be compared.")
     
 
+    def __hash__(self) -> int:
+        return object.__hash__(self)
+    
+
 
     def copy(self):
         return self.__class__(*self.contents, size=self.size)
