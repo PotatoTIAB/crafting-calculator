@@ -1,15 +1,17 @@
 from sys import exit
 from itemLib import *
+import math
 
 class CraftingCalculator:
     def __init__(self):
         self.recipes = {
             ItemContainer(ItemStack("stick", 2)): ItemContainer(ItemStack("planks")),
             ItemContainer(ItemStack("planks", 2)): ItemContainer(ItemStack("wood")),
+            ItemContainer(ItemStack("wooden_sword")): ItemContainer(ItemStack("planks", 2), ItemStack("stick")),
         }
 
 
-    def calculate(self, cont: (ItemContainer | ItemStack | str | list[str, int | None])) -> ItemContainer:
+    def calculate(self, cont: (ItemContainer | ItemStack | str | list[str, int | None]), steps: bool = False) -> ItemContainer:
         if not isinstance(cont, ItemContainer):
             _item, cont = cont, ItemContainer()
             if isinstance(_item, str):
@@ -23,9 +25,23 @@ class CraftingCalculator:
                     raise ValueError(f"Expected a list with 1 or 2 elements, got {len(cont)} instead.")
             cont.add(_item)
         
-        while self.substitute(cont):
-            pass
-        
+        if steps:
+            _arr = []
+            while True:
+                _res = self.substitute(cont)
+                if _res:
+                    _arr.append(_res)
+                else:
+                    break
+
+            _arr.reverse()
+            for _input, _output in _arr:
+                print(f"{str(_input)} -> {str(_output)}")
+        else:
+            while self.substitute(cont):
+                pass
+
+
         return cont
 
 
@@ -37,15 +53,28 @@ class CraftingCalculator:
         return (None, None)
 
 
-    def substitute(self, cont: ItemContainer):
+    def substitute(self, cont: ItemContainer) -> (None | tuple[ItemContainer, ItemContainer]):
         for _item in cont:
             _output, _input = self.recipeSearch(_item.id)
-            if not _input:
-                return False
+            if not _input or not _output:
+                continue
 
+            _multList = []
+            for _recipeItem in _output:
+                _foundItem = cont.find(_recipeItem)
+                if _foundItem:
+                    _multList.append(math.ceil(_foundItem.count / _recipeItem.count))
+                    break
+            else:
+                continue
+            
+            _mult: int = max(i for i in _multList)
+            _input *= _mult
+            _output *= _mult
             cont.remove(_output)
             cont.add(_input)
-            return True
+            return (_input, _output) 
+        return
 
 
 calc = CraftingCalculator()
@@ -59,5 +88,6 @@ while True:
         continue
     break
 itemToCraft = ItemStack(itemid, itemcount)
-print(f"Items required to craft {str(itemToCraft)}:")
-print(calc.calculate(itemToCraft))
+print(f"Steps to craft {str(itemToCraft)}:")
+res = calc.calculate(itemToCraft, True)
+print(f"\nTotal raw items required to craft:\n{str(res)}")

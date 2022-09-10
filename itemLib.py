@@ -86,6 +86,10 @@ class ItemStack:
         return f"{self.count}x {self.id.title()}"
 
 
+    def __eq__(self, other: object) -> bool:
+        if isinstance(other, self.__class__):
+            return other.id == self.id
+
 
 class ItemContainer:
     """
@@ -107,16 +111,50 @@ class ItemContainer:
     def __str__(self):
         _str = ""
         for _item in self:
-            _str += str(_item) + '\n'
-        return _str[:-1]
+            _str += str(_item) + ', '
+        return _str[:-2]
 
 
-    def add(self, x: (Any | ItemStack)) -> None:
+    def __mul__(self, x):
+        _cont = self.copy()
+        _cont.mult(x)
+        return _cont
+
+
+    def __len__(self) -> int:
+        return len(self.contents)
+
+
+    def __eq__(self, other: object) -> bool:
+        if isinstance(other, self.__class__):
+            if len(self) != len(other):
+                return False
+
+            for _item in other:
+                if self.index(_item) < 0:
+                    return False
+            return True
+
+        else:
+            raise TypeError("Only two containers can be compared.")
+    
+
+    def __hash__(self) -> int:
+        return object.__hash__(self)
+    
+
+
+    def copy(self):
+        return self.__class__(*self.contents, size=self.size)
+
+
+    def add(self, x: (Any | ItemStack), mult: int = 1) -> None:
         """
         Adds the given item or container items to container.
         """
 
         if isinstance(x, ItemStack):
+            x *= mult
             _i = self.index(x)
             if _i < 0:
                 self.contents.append(x)
@@ -125,19 +163,20 @@ class ItemContainer:
         
         elif isinstance(x, self.__class__):
             for _item in x:
-                self.add(_item)
+                self.add(_item, mult=mult)
         
         else:
             raise TypeError(f"You can only add items, not {type(x)}.")
     
     
-    def remove(self, x: (Any | ItemStack)) -> (list[ItemStack] | None):
+    def remove(self, x: (Any | ItemStack), mult: int = 1) -> (list[ItemStack] | None):
         """
         Removes the given item or container items from container and return what has been removed.
         Can delete that slot if no items left to remove.
         """
         
         if isinstance(x, ItemStack):
+            x *= mult
             _i = self.index(x)
             if _i < 0:
                 return None
@@ -151,7 +190,7 @@ class ItemContainer:
         elif isinstance(x, self.__class__):
             _ret = []
             for _item in x:
-                _ret.append(self.remove(_item))
+                _ret.append(self.remove(_item, mult=mult))
             return _ret
         
         else:
@@ -171,11 +210,56 @@ class ItemContainer:
             raise TypeError(f"Invalid type: {type(x)}")
         
         _i = 0
-        for item in self.contents:
-            if item.id == x:
+        for _item in self.contents:
+            if _item.id == x:
                 return _i
             _i += 1
         return -1
+    
+    
+    def find(self, x: (ItemStack| str)) -> (ItemStack | None):
+        """
+        Finds and returns the item inside the container.
+        Returns None if not found.
+        """
+
+        if isinstance(x, ItemStack):
+            x = x.id
+        
+        elif not isinstance(x, str):
+            raise TypeError(f"Invalid type: {type(x)}")
+        
+        for _item in self.contents:
+            if _item.id == x:
+                return _item
+
+
+    def mult(self, mult: int) -> None:
+        """
+        Multiplies the items inside with the given mult.
+        """
+
+        for i in range(len(self.contents)):
+            self.contents[i] *= mult
+
+
+    def ratio(self, other) -> bool:
+        """
+        Returns ratio between two containers.
+        Raises ValueError if two containers don't contain the same items of same type. 
+        """
+        if isinstance(other, self.__class__):
+            if self != other:
+                raise ValueError("Two containers have item difference to ratio.")
+            
+            _arr = []
+            for x in self:
+                _item = other.find(x)
+                _arr.append(_item.count / x.count)
+            return _arr
+            
+        
+
 
 if __name__ == "__main__":
     pass
