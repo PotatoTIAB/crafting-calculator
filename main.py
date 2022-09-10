@@ -53,31 +53,28 @@ class CraftingCalculator:
         return (None, None)
 
 
-    def substitute(self, cont: ItemContainer):
+    def substitute(self, cont: ItemContainer) -> (None | tuple[ItemContainer, ItemContainer]):
         for _item in cont:
             _output, _input = self.recipeSearch(_item.id)
-            if not _input:
+            if not _input or not _output:
                 continue
 
             _multList = []
             for _recipeItem in _output:
                 _foundItem = cont.find(_recipeItem)
                 if _foundItem:
-                    print(_foundItem.count, _recipeItem.count)
                     _multList.append(math.ceil(_foundItem.count / _recipeItem.count))
                     break
             else:
                 continue
             
-            _mult = max(i for i in _multList)
-            print(f"current mult: {_multList}")
+            _mult: int = max(i for i in _multList)
             _input *= _mult
             _output *= _mult
             cont.remove(_output)
             cont.add(_input)
-            print(f"current state: {str(cont)}")
             return (_input, _output) 
-        return False
+        return
 
 
 calc = CraftingCalculator()
