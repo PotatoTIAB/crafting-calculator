@@ -86,6 +86,10 @@ class ItemStack:
         return f"{self.count}x {self.id.title()}"
 
 
+    def __eq__(self, other: object) -> bool:
+        if isinstance(other, self.__class__):
+            return other.id == self.id
+
 
 class ItemContainer:
     """
@@ -116,6 +120,24 @@ class ItemContainer:
         _cont.mult(x)
         return _cont
 
+
+    def __len__(self) -> int:
+        return len(self.contents)
+
+
+    def __eq__(self, other: object) -> bool:
+        if isinstance(other, self.__class__):
+            if len(self) != len(other):
+                return False
+
+            for _item in other:
+                if self.index(_item) < 0:
+                    return False
+            return True
+
+        else:
+            raise TypeError("Only two containers can be compared.")
+    
 
 
     def copy(self):
@@ -215,6 +237,23 @@ class ItemContainer:
 
         for i in range(len(self.contents)):
             self.contents[i] *= mult
+
+
+    def ratio(self, other) -> bool:
+        """
+        Returns ratio between two containers.
+        Raises ValueError if two containers don't contain the same items of same type. 
+        """
+        if isinstance(other, self.__class__):
+            if self != other:
+                raise ValueError("Two containers have item difference to ratio.")
+            
+            _arr = []
+            for x in self:
+                _item = other.find(x)
+                _arr.append(_item.count / x.count)
+            return _arr
+            
         
 
 
